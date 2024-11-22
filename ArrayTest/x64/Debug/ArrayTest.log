@@ -1,2 +1,2 @@
 ﻿  ArrayTest.cpp
-  ArrayTest.vcxproj -> D:\Project\MyAlgo\x64\Debug\ArrayTest.exe
+D:\Project\MyAlgo\ArrayTest\ArrayTest.cpp(34,1): error C2059: 구문 오류: '상수'
