@@ -1,0 +1,3 @@
+﻿  SortTest.cpp
+D:\Project\MyAlgo\SortTest\SortTest.cpp(102,1): warning C4717: 'merge_sort': 모든 제어 경로에서 재귀적입니다. 함수로 인해 런타임 스택 오버플로가 발생합니다.
+  SortTest.vcxproj -> D:\Project\MyAlgo\x64\Debug\SortTest.exe
