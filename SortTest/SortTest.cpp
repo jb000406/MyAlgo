@@ -3,13 +3,171 @@
 
 #include <iostream>
 #include <algorithm>
+#include <vector>
+#include <string>
 
 using namespace std;
 
+//탐색: 선형, 이진
+//target을 찾으면 true, 못찾으면(데이터에 없다) false
+bool linear_search(int data[], int n, int target)
+{
+    for (int i = 0; i < n; i++)
+    {
+        if (data[i] == target)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+//이진탐색
+bool binary_search(int data[], int n, int target)
+{
+    int lower = 0;
+    int upper = n - 1;
+
+    while (lower <= upper)
+    {
+        int middle = (lower + upper) / 2;
+
+        if (data[middle] == target)
+        {
+            return true;
+        }
+        else if (data[middle] < target)
+        {
+            lower = middle + 1;
+        }
+        else
+        {
+            upper = middle - 1;
+        }
+    }
+
+    return false;
+}
+
+
+int main()
+{
+    int data[] = { 1, 2, 3, 5, 7, 10, 13, 15, 19, 23, 25, 27, 28, 30, 32, 33 };
+    //30찾기
+    int target = 30;
+
+    bool result1 = linear_search(data, size(data), target);
+    bool result2 = binary_search(data, size(data), target);
+    bool result3 = std::binary_search(begin(data), end(data), target);
+
+    cout << result1 << endl;
+    cout << result2 << endl;
+    cout << result3 << endl;
+
+}
+
+
+/*
+//std::sort 예제
+
+//절대값 오름차순
+bool abs_com(const int a, const int b)
+{
+    return std::abs(a) < std::abs(b);
+}
+
+struct AbsCmp {
+    bool operator()(int a, int b)
+    {
+        return std::abs(a) < std::abs(b);
+    }
+};
+
+class Person
+{
+public:
+    string name;
+    int age;
+
+    bool operator<(const Person& a) const
+    {
+        return this->age < a.age;
+    }
+
+    void print() const
+    {
+        std::cout << name << ", " << age << endl;
+    }
+};
+
+
+int main()
+{
+    vector<Person> v;
+    v.push_back({"Amelia", 29});
+    v.push_back({"Noah", 25 });
+    v.push_back({"Olivia", 31 });
+    v.push_back({"Shopi", 40 });
+    v.push_back({"George", 35 });
+
+    std::sort(v.begin(), v.end());
+
+    for (const auto& p : v)
+    {
+        p.print();
+    }
+
+
+    //배열
+    //int arr[5] = { 4, 2, 3, 5, 1 };
+    //sort(arr, arr + 5);
+    //sort(std::begin(arr), std::end(arr));
+    //sort(begin(arr), end(arr), greater<>()); //내림차순
+    //sort(std::begin(arr), std::end(arr), less<>()); //오름차순
+
+    //for (const auto& n : arr)
+    //{
+    //    cout << n << ", ";
+    //}
+    //cout << endl;
+
+
+    //vector
+    //vector<string> vec = { "orange", "banana", "apple", "lemon" };
+    //sort(vec.begin(), vec.end());
+    //sort(vec.begin(), vec.end(), greater<>()); //내림차순
+
+    //for (const auto& a : vec)
+    //{
+    //    cout << a << ", ";
+    //}
+    //cout << endl;
+
+    //비교방법 정의하고 지정하기 : 절대값 오름차순
+    //                           2, -3, 5, 7, 10
+    //vector<int> nums = { 10, 2, -3, 5, 7 };
+    //sort(nums.begin(), nums.end(), abs_com);
+    //sort(nums.begin(), nums.end(), AbsCmp());
+    //sort(nums.begin(), nums.end(), [](int a, int b) {
+    //    return std::abs(a) < std::abs(b);
+    //    });
+
+    //for (const auto& a : nums)
+    //{
+    //    cout << a << ", ";
+    //}
+    //cout << endl;
+
+}
+*/
+
+
+/*
 //버블 정렬
 void bubble_sort(int data[], int n)
 {
-    for (int i = 0; i < n - 1; i++)
+    for (int i = 0; i < n-1; i++)
     {
         for (int j = n - 1; j > i; j--)
         {
@@ -26,7 +184,7 @@ void selection_sort(int data[], int n)
 {
     for (int i = 0; i < n - 1; i++)
     {
-        int idx = i;        //정렬되지 않은 데이터중에 최소값을 가진 데이터의 인덱스    :
+        int idx = i;    //정렬되지 않은 데이터중에 최소값을 가진 데이터의 인덱스
         for (int j = i + 1; j < n; j++)
         {
             if (data[j] < data[idx])
@@ -78,27 +236,31 @@ void merge(int data[], int left, int mid, int right)
     {
         buff[k++] = data[i++];
     }
-    //오른쪽에 데이터가 남아있으면
+
+    //오른쪽 데이터가 남아있으면
     while (j <= right)
     {
         buff[k++] = data[j++];
     }
 
-    //임시변수에 저장된 데이터를 다시 옮기기
+    //임시변수에 저장된 정렬된 데이터를 다시 옮기기
     for (int x = left; x <= right; x++)
     {
         data[x] = buff[x];
     }
 }
 
-//병합정렬
+//병합 정렬
 // left: 정렬할 데이터의 맨 앞, right: 정렬할 데이터의 맨 뒤
 void merge_sort(int data[], int left, int right)
 {
-    int mid = (left + right) / 2;
-    merge_sort(data, left, mid);
-    merge_sort(data, mid + 1, right);
-    merge(data, left, mid, right);
+    if (left < right)
+    {
+        int mid = (left + right) / 2;
+        merge_sort(data, left, mid);
+        merge_sort(data, mid + 1, right);
+        merge(data, left, mid, right);
+    }
 }
 
 //분할
@@ -107,15 +269,16 @@ int partition(int data[], int left, int right)
     int pivot = data[left];
     int i = left + 1;
     int j = right;
+
     while (true)
     {
-        //i의 위치를 pivot 보가 큰값 까지 이동
+        //i의 위치를 pivot 보다 큰값까지 이동
         while (data[i] <= pivot && i <= right)
         {
             i++;
         }
 
-        //j의 위치를 pivot 보가 작은값 까지 이동
+        //j의 위치를 pivot 보다 작은값까지 이동
         while (data[j] > pivot && j > left)
         {
             j--;
@@ -136,7 +299,6 @@ int partition(int data[], int left, int right)
     return j;
 }
 
-
 //퀵 정렬
 void quic_sort(int data[], int left, int right)
 {
@@ -148,6 +310,8 @@ void quic_sort(int data[], int left, int right)
     }
 }
 
+
+
 int main()
 {
     int data[] = { 5, 6, 7, 3, 1, 9, 2, 4, 8 };
@@ -155,18 +319,19 @@ int main()
 
     for (auto n : data)
     {
-        cout << n << ", ";
+        std::cout << n << ", ";
     }
-    cout << endl; 
+    std::cout << endl;
 
-    /*int data[] = { 2, 6, 7, 4, 1, 8, 5, 3 };
-    merge_sort(data, 0, 7);
 
-    for (auto n : data)
-    {
-        cout << n << ", ";
-    }
-    cout << endl;*/
+    //int data[] = {2, 6, 7, 4, 1, 8, 5, 3 };
+    //merge_sort(data, 0, 7);
+
+    //for (auto n : data)
+    //{
+    //    cout << n << ", ";
+    //}
+    //cout << endl;
 
     //int data[] = { 4, 2, 3, 5, 1 };
     ////bubble_sort(data, 5);
@@ -178,15 +343,6 @@ int main()
     //    cout << n << ", ";
     //}
     //cout << endl;
+
 }
-
-// 프로그램 실행: <Ctrl+F5> 또는 [디버그] > [디버깅하지 않고 시작] 메뉴
-// 프로그램 디버그: <F5> 키 또는 [디버그] > [디버깅 시작] 메뉴
-
-// 시작을 위한 팁: 
-//   1. [솔루션 탐색기] 창을 사용하여 파일을 추가/관리합니다.
-//   2. [팀 탐색기] 창을 사용하여 소스 제어에 연결합니다.
-//   3. [출력] 창을 사용하여 빌드 출력 및 기타 메시지를 확인합니다.
-//   4. [오류 목록] 창을 사용하여 오류를 봅니다.
-//   5. [프로젝트] > [새 항목 추가]로 이동하여 새 코드 파일을 만들거나, [프로젝트] > [기존 항목 추가]로 이동하여 기존 코드 파일을 프로젝트에 추가합니다.
-//   6. 나중에 이 프로젝트를 다시 열려면 [파일] > [열기] > [프로젝트]로 이동하고 .sln 파일을 선택합니다.
+*/
